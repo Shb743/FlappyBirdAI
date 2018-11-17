@@ -1,7 +1,6 @@
 # pygame
-
 import sys, pygame, time
-import click
+from click import Neuron
 
 pygame.init()
 
@@ -10,15 +9,15 @@ speed = [0, 3.0]
 black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
-
+# The main object
 ball = pygame.image.load("superman.png")
-ball = pygame.transform.scale(ball,(192,108))
+ball = pygame.transform.scale(ball,(86,59))
 ballrect = ball.get_rect()
 ballrect = ballrect.move([350,300])
-cp = height//2
 
-batch_of_neurons = [click.Neuron(0,0) for i in range(100)]
-print batch_of_neurons
+batch = [Neuron(0,0) for i in xrange(100)]
+for neuron in batch:
+    print neuron.weight
 
 while True:
     for event in pygame.event.get():
@@ -41,6 +40,12 @@ while True:
 
     screen.fill(black)
     screen.blit(ball, ballrect)
+
+    # The guidelines
+    pygame.draw.line(screen,(244,244,66),[0,200],[800,200],5)
+    pygame.draw.line(screen,(244,244,66),[0,350],[800,350],5)
+
+    
     pygame.display.flip()
     time.sleep(0.01)
     if (speed[1] < 3.0):

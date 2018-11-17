@@ -1,14 +1,12 @@
-            # --------------------------------
-            # |            MAIN              |
-            # --------------------------------
+            # ===============================
+            # |            MAIN             |
+            # ===============================
 
+import game
 
-# Need a fitness function
-
-# Different possible fitness functions:
-# - D from centre
-
-# We generate an array of size N
-
-
-def fitness():
+def fitness(obj)
+    centreLine = 0
+    # Extract the objects (x,y) position
+    # Distance from the centre of the frame
+    score = (obj.y - centreLine) / 100
+    

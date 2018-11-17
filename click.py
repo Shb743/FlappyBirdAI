@@ -1,4 +1,6 @@
 import random
+import math
+
 class Neuron:
     inputSum = 0
     weight = 0
