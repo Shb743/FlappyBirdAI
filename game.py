@@ -1,27 +1,29 @@
-     # pygame
+# pygame
 
 import sys, pygame, time
+import click
+
 pygame.init()
 
 size = width, height = 800, 600
 speed = [0, 3.0]
 black = 0, 0, 0
 
-children = []
-
 screen = pygame.display.set_mode(size)
 
-ball = pygame.image.load("basketball_ball.png")
+ball = pygame.image.load("superman.png")
+ball = pygame.transform.scale(ball,(192,108))
 ballrect = ball.get_rect()
 ballrect = ballrect.move([350,300])
 cp = height//2
 
+batch_of_neurons = [click.Neuron(0,0) for i in range(100)]
+print batch_of_neurons
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-            print children
 
         elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -39,11 +41,7 @@ while True:
 
     screen.fill(black)
     screen.blit(ball, ballrect)
-    # children.append()
-    # print
-    children.append(ballrect[1])
     pygame.display.flip()
     time.sleep(0.01)
-    print children
     if (speed[1] < 3.0):
         speed[1] += 0.2
