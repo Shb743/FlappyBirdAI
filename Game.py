@@ -1,6 +1,25 @@
 import sys,pygame,time
 import Player,Network
 from copy import deepcopy
+#For saving/loading the best AI
+try:
+	import cPickle as pickle
+except ModuleNotFoundError:
+	import pickle
+
+def save_object(obj, filename):
+	with open(filename, 'wb') as output:  # Overwrites any existing file.
+		pickle.dump(obj, output)
+
+
+def load_object(filename):
+	""" Unpickle a file of pickled data. """
+	with open(filename, "rb") as f:
+		try:
+			return pickle.load(f)
+		except EOFError:
+			pass
+#For saving/loading the best AI*
 
 pygame.init()
 
@@ -26,8 +45,18 @@ def create_networks():
 		AI[1].addLayer(1) #input layer
 		AI[1].addLayer(5) #Deep layer
 		AI[1].addLayer(1,AI[0].jump) #Output layer
-create_networks()
+
+#Check if im loading an AI or training a set from scratch?
+fname = input("load from file ?") 
+if (len(fname) > 3):
+	AIs.append( (Player.Player(),load_object(fname)) )
+	AIs[0][1].nodes[-1][0].output_funct = AIs[0][0].jump
+else:
+	create_networks()
+#Check if im loading an AI or training a set from scratch?*
 #Ai Stuffs*
+
+
 
 
 def Run(timeout = 10.0):
@@ -95,7 +124,8 @@ def train(epochs=10, timeout=10.0, retention=10.0, children=5):
 		print(f"AIs with children and new inits: {len(AIs)}")
 		#Fill up remaining batch size with new copies*
 
-train(timeout=10 , epochs=10)
+if (len(fname) < 3):
+	train(timeout=10 , epochs=6)
 
 print("Showing the best one")
 AIs = AIs[:1]
@@ -104,5 +134,20 @@ print("Done")
 #Keep screen alive
 while(1):
 	for event in pygame.event.get():
-			if event.type == pygame.QUIT: sys.exit()
+			if event.type == pygame.QUIT: 
+				sys.exit()
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					print("Showing the best one")
+					Run()
+					print("Done")
+				elif event.key == pygame.K_s:
+					tmp = AIs[0][1].nodes[-1][0].output_funct
+					AIs[0][1].nodes[-1][0].output_funct = None
+					fname = input("output file name") 
+					if (len(fname) > 3):
+						save_object(AIs[0][1],fname)
+					else:
+						save_object(AIs[0][1],"AI.pickl")
+					AIs[0][1].nodes[-1][0].output_funct = tmp
 	time.sleep(0.1)
