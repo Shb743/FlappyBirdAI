@@ -24,7 +24,6 @@ def load_object(filename):
 pygame.init()
 
 size = width, height = 800, 600
-black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
 
@@ -39,8 +38,6 @@ Player.decel = 10
 Player.gravity = 10
 
 #Ai Stuffs
-high_score = 0
-highest_scorer = None
 batch_size = 100
 AIs = []
 def create_networks():
@@ -63,52 +60,13 @@ else:
 #Ai Stuffs*
 
 
-def Run(timeout = 10.0):
-	global AIs
-	global high_score
-	global highest_scorer
-	old_time = (pygame.time.get_ticks()/100.00)
-	time_delta = 1.0
-	Pipe = Game.Pipe()
-	while (timeout > 0):
-		screen.fill(black)
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT: sys.exit()
-		#Update AIs
-		for AI in AIs:
-			AI[1].fire([ (AI[0].player_rect.y)/(height*1.0) ])
-			AI[0].update(time_delta)
-			#visuals
-			if (highest_scorer):
-				highest_scorer.color = highest_scorer.oldcolor
-			if (AI[0].score > high_score):
-				high_score = AI[0].score
-				highest_scorer = AI[0]
-			highest_scorer.oldcolor = highest_scorer.color
-			highest_scorer.color = 255,255,255
-			#visuals*
-		#Update AIs*
-		# The guidelines
-		pygame.draw.line(screen,(244,244,66),[0,height/2],[width,height/2],1)
-
-		Pipe.move(time_delta)
-		pygame.display.flip()#update display surface
-		#Time Stuffs
-		time_delta = ((pygame.time.get_ticks()/100.00) - old_time)
-		old_time = (pygame.time.get_ticks()/100.00)
-		#print(f"FPS:{int(1/(time_delta/10))}" )
-		timeout -= (time_delta/10)
-		#Time Stuffs*
-	high_score = 0
-
-
 
 def train(epochs=10, timeout=10.0, retention=10.0, children=5):
 	global AIs
 	global batch_size
 
 	for x in range(epochs):
-		Run(timeout)
+		Game.Run(AIs,timeout)
 		#Get Best Performing AIs
 		AIs = sorted(AIs, key=lambda x: (x[0].score))
 		AIs.reverse()
@@ -145,11 +103,11 @@ def train(epochs=10, timeout=10.0, retention=10.0, children=5):
 		#Fill up remaining batch size with new copies*
 
 if (len(fname) < 3):
-	train(timeout=5 , epochs=10 )
+	train(timeout=10 , epochs=10 )
 
 print("Showing the best one")
 AIs = AIs[:1]
-Run(3)
+Game.Run(AIs)
 print("Done")
 #Keep screen alive
 while(1):
@@ -159,7 +117,7 @@ while(1):
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
 					print("Showing the best one")
-					Run(3)
+					Game.Run(AIs,5)
 					print("Done")
 				elif event.key == pygame.K_s:
 					tmp = AIs[0][1].nodes[-1][0].output_funct
