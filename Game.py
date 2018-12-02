@@ -37,7 +37,7 @@ def Run(timeout = 10.0):
 		#		if event.key == pygame.K_SPACE:
 		#			ball.jump()
 		#ball.update(time_delta)
-		#print time_delta
+		#print(time_delta)
 		for AI in AIs:
 			AI[1].fire([ (AI[0].player_rect.y)/(height*1.0) ])
 			AI[0].update(time_delta)
@@ -48,15 +48,15 @@ def Run(timeout = 10.0):
 		pygame.display.flip()
 		time_delta = ((pygame.time.get_ticks()/100.00) - old_time)
 		old_time = (pygame.time.get_ticks()/100.00)
-		print int(1/(time_delta/10))
+		print(int(1/(time_delta/10)))
 		timeout -= (time_delta/10)
 		#print int(round(1/(time_delta/10)))
 		#time.sleep(0.02)
 	AIs = sorted(AIs, key=lambda x: (x[0].score))
 	AIs.reverse()
-	print "------"
+	print("------")
 	for AI in AIs:
-		print AI[0].score
+		print(AI[0].score)
 Run()
 
 #Keep screen alive
