@@ -13,7 +13,8 @@ class Player():
 	score = 0
 	speed = [0, 0]
 	def __init__(self):
-		self.player_rect = pygame.draw.circle(screen,self.color,[400,300],10)
+		global height
+		self.player_rect = pygame.draw.circle(screen,self.color,[400,int(height/2)],10)
 		self.speed[1] = gravity
 	def move(self,time_delta):
 		if ((time_delta > 0) and (time_delta < 10)):
@@ -22,6 +23,7 @@ class Player():
 		self.speed[1] = -jump_speed
 
 	def update(self, time_delta):
+		global height
 		#print self.score
 		#print tmp
 		if (abs(self.player_rect.y - (height/2))/(height/2.0) > 0.1):
