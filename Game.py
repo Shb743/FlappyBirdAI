@@ -56,7 +56,7 @@ def Run(timeout = 10.0):
 
 
 
-def train(epochs=10, timeout=10.0, retention=10.0, mutation=5):
+def train(epochs=10, timeout=10.0, retention=10.0, children=5):
 	global AIs
 	global batch_size
 
@@ -78,20 +78,20 @@ def train(epochs=10, timeout=10.0, retention=10.0, mutation=5):
 		for i in range(retainedAISize):
 			tmp = AIs[i][1].nodes[-1][0].output_funct
 			AIs[i][1].nodes[-1][0].output_funct = None
-			for j in range(mutation):
+			for j in range(children):
 				AIs.append( (Player.Player(),deepcopy(AIs[i][1]))  )
 				AIs[-1][1].nodes[-1][0].output_funct = AIs[-1][0].jump
 				AIs[-1][1].mutate()
 			AIs[i][1].nodes[-1][0].output_funct = tmp
 		#All retained AIs should have y mutated copies*
 		#Fill up remaining batch size with new copies
-		print(f"AIs with mutations : {len(AIs)}")
+		print(f"AIs with children : {len(AIs)}")
 		while(len(AIs) < batch_size):
 			AIs.append((Player.Player(),Network.DenseNetwork()))
 			AIs[-1][1].addLayer(1) #input layer
 			AIs[-1][1].addLayer(5) #Deep layer
 			AIs[-1][1].addLayer(1,AIs[-1][0].jump) #Output layer
-		print(f"AIs with mutations and new inits: {len(AIs)}")
+		print(f"AIs with children and new inits: {len(AIs)}")
 		#Fill up remaining batch size with new copies*
 
 train(timeout=10)
