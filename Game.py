@@ -65,14 +65,15 @@ def train(epochs=10, timeout=10.0, retention=10.0, children=5):
 		#Get Best Performing AIs
 		AIs = sorted(AIs, key=lambda x: (x[0].score))
 		AIs.reverse()
-		for AI in AIs:
-			print(AI[0].score)
-		print("\n\n\n")
 		#Get Best Performing AIs*
 		#Retain top x% 
 		AIs = AIs[:int(len(AIs)*(retention/100.0))]
 		retainedAISize = len(AIs)
 		print(f"keeping top {retention}% of AIs : {retainedAISize}")
+		for AI in AIs:
+			print(AI[0].score)
+			AI[0].score = 0
+		print("\n\n\n")
 		#Retain top x% *
 		#All retained AIs should have y mutated copies
 		for i in range(retainedAISize):
@@ -94,8 +95,12 @@ def train(epochs=10, timeout=10.0, retention=10.0, children=5):
 		print(f"AIs with children and new inits: {len(AIs)}")
 		#Fill up remaining batch size with new copies*
 
-train(timeout=10)
+train(timeout=10 , epochs=10)
 
+print("Showing the best one")
+AIs = AIs[:1]
+Run()
+print("Done")
 #Keep screen alive
 while(1):
 	for event in pygame.event.get():
