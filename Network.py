@@ -68,7 +68,7 @@ class DenseNetwork():
 			if (random.random() < chance): #pick layer to mutate 80 % of the time
 				for j in range(len(self.nodes[i])):
 					if (random.random() < chance): #pick node to mutate 80 % of the time
-						nodes[i][j].mutate(chance,completeChangeChance)
+						self.nodes[i][j].mutate(chance,completeChangeChance)
 '''a = DenseNetwork()
 def pwint():
 	print("Fired")
