@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 class Neuron():
 	connections = None #list of lists [ [neuron,weight], ...]
 	output_funct = None#for output nodes
@@ -15,6 +16,7 @@ class Neuron():
 			if (self.current_inp >= 0.5): #Activation function
 				self.output_funct()
 		self.current_inp = 0.0
+
 	def mutate(self,chance=0.8,completeChangeChance=.1):
 		for con in self.connections:
 			if (random.random() < chance): #pick connection to mutate 80 % of the time
@@ -32,6 +34,27 @@ class DenseNetwork():
 	def __init__(self):
 		pass
 
+	def clone(self,reset=True,outputs=False):
+		clonedNetwork = DenseNetwork()
+		if (reset):
+			for i in range(len(self.nodes)):
+				clonedNetwork.addLayer(len(self.nodes[i]))
+		else:
+			clonedNetwork.nodes = deepcopy(self.nodes)
+			clonedNetwork.IV_size = self.IV_size
+			#Remove any outputs
+			for layer in clonedNetwork.nodes:
+				for node in layer:
+					node.output_funct = None
+			#Remove any outputs*
+		#Reset the output vector
+		if (outputs):
+			for i in range(len(clonedNetwork.nodes[-1])):
+				clonedNetwork.nodes[-1][i].output_funct = outputs[i]
+		#Reset the output vector*
+
+		return clonedNetwork
+
 	def addLayer(self, size, output = False):
 		if (self.nodes == None):
 			self.IV_size = size
@@ -45,7 +68,7 @@ class DenseNetwork():
 			for i in range(size):
 				me = None
 				if (output != False):
-					me = Neuron([],output)
+					me = Neuron([],output[i])
 				else:
 					me = Neuron([])
 				self.nodes[-1].append(me)

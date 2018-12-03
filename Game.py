@@ -47,7 +47,7 @@ def Run(AIs,timeout = 10.0):
 	global screen_height
 	global screen_width
 
-	high_score = 0
+	high_score = 10
 	highest_scorer = None
 	old_time = (pygame.time.get_ticks()/100.00)
 	time_delta = 1.0
@@ -66,8 +66,9 @@ def Run(AIs,timeout = 10.0):
 			if (AI[0].score > high_score):
 				high_score = AI[0].score
 				highest_scorer = AI[0]
-			highest_scorer.oldcolor = highest_scorer.color
-			highest_scorer.color = 255,255,255
+			if (highest_scorer):
+				highest_scorer.oldcolor = highest_scorer.color
+				highest_scorer.color = 255,255,255
 			#visuals*
 		#Update AIs*
 		# The guidelines
@@ -81,4 +82,3 @@ def Run(AIs,timeout = 10.0):
 		#print(f"FPS:{int(1/(time_delta/10))}" )
 		timeout -= (time_delta/10)
 		#Time Stuffs*
-	high_score = 0

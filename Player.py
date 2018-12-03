@@ -26,7 +26,7 @@ class Player():
 		global height
 		#print self.score
 		#print tmp
-		if (abs(self.player_rect.y - (height/2))/(height/2.0) > 0.1):
+		if (abs(self.player_rect.y - (height/2))/(height/2.0) > 0.2):
 			self.score -= 0.1
 		else:
 			self.score += 0.1
