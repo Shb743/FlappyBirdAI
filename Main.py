@@ -151,7 +151,8 @@ while(1):
 						save_object(tmpAIs,fname)
 					else:
 						save_object(tmpAIs,"AIs.pickl")
-				#elif event.key == pygame.K_c:
-				#	Game.Pipe()
+				elif event.key == pygame.K_t:
+					train(timeout=30 , epochs=5 )
+					AIs = AIs[:10]
 					
 	time.sleep(0.1)

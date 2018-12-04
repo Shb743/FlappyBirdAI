@@ -62,6 +62,7 @@ def Run(AIs,timeout = 10.0):
 	#reset AIs
 	for AI in AIs:
 		AI[0].active = True
+		AI[0].score = 0
 	#reset AIs*
 	while (timeout > 0):
 		#Time Stuffs
