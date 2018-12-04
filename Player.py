@@ -18,7 +18,8 @@ class Player():
 		self.speed[1] = gravity
 	def move(self,time_delta):
 		if ((time_delta > 0) and (time_delta < 10)):
-			self.player_rect = pygame.draw.circle(screen,self.color,[self.player_rect.centerx+int(round(self.speed[0]*time_delta)),self.player_rect.centery+int(round(self.speed[1]*time_delta))],10)
+			#print(round(self.speed[1]*time_delta))
+			self.player_rect = pygame.draw.circle(screen,self.color,[self.player_rect.centerx+round(self.speed[0]*time_delta),self.player_rect.centery+round(self.speed[1]*time_delta)],10)
 	def jump(self):
 		self.speed[1] = -jump_speed
 

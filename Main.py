@@ -108,6 +108,9 @@ if (len(fname) < 3):
 
 #Take best AI
 #AIs = AIs[:1]
+#for i in range(9):
+#	tmp = Player.Player()
+#	AIs.append( (tmp,AIs[0][1].clone(reset=False,outputs=[tmp.jump])) )
 #Take best AI*
 print("Showing the best ones")
 AIs[0][0].score = 0
