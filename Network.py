@@ -1,5 +1,10 @@
-import random
+import random,os
 from copy import deepcopy
+
+random_data = os.urandom(7)
+seed = int.from_bytes(random_data, byteorder="big")
+random.seed(seed)
+
 class Neuron():
 	connections = None #list of lists [ [neuron,weight], ...]
 	output_funct = None#for output nodes

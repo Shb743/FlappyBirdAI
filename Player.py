@@ -12,6 +12,7 @@ class Player():
 	player_rect = None
 	score = 0
 	speed = [0, 0]
+	active = True
 	def __init__(self):
 		global height
 		self.player_rect = pygame.draw.circle(screen,self.color,[400,int(height/2)],10)
@@ -27,19 +28,17 @@ class Player():
 		global height
 		#print self.score
 		#print tmp
-		if (abs(self.player_rect.y - (height/2))/(height/2.0) > 0.2):
-			self.score -= 0.1
-		else:
-			self.score += 0.1
-		if self.player_rect.bottom > height:
-			if (self.speed[1] < 0.0):
+		if (self.active):
+			self.score += 0.1 #add to score for every second alive
+			if self.player_rect.bottom > height:
+				if (self.speed[1] < 0.0):
+					self.move(time_delta)
+			elif self.player_rect.top < 0:
+				if (self.speed[1] > 0.0):
+					self.move(time_delta)
+			else:
 				self.move(time_delta)
-		elif self.player_rect.top < 0:
-			if (self.speed[1] > 0.0):
-				self.move(time_delta)
-		else:
-			self.move(time_delta)
-		if (self.speed[1] < gravity):
-			self.speed[1] += decel*time_delta
-			if (self.speed[1] > gravity):
-				self.speed[1] = gravity
+			if (self.speed[1] < gravity):
+				self.speed[1] += decel*time_delta
+				if (self.speed[1] > gravity):
+					self.speed[1] = gravity
