@@ -32,7 +32,7 @@ class Neuron():
 					con[1] += random.uniform(-0.02,0.02) 
 
 class DenseNetwork():
-	nodes = None 
+	layers = None 
 	IV_size = None
 	def __init__(self):
 		pass
@@ -40,34 +40,34 @@ class DenseNetwork():
 	def clone(self,reset=True,outputs=False):
 		clonedNetwork = DenseNetwork()
 		if (reset):
-			for i in range(len(self.nodes)):
-				clonedNetwork.addLayer(len(self.nodes[i]))
+			for i in range(len(self.layers)):
+				clonedNetwork.addLayer(len(self.layers[i]))
 		else:
-			clonedNetwork.nodes = deepcopy(self.nodes)
+			clonedNetwork.layers = deepcopy(self.layers)
 			clonedNetwork.IV_size = self.IV_size
 			#Remove any outputs
-			for layer in clonedNetwork.nodes:
+			for layer in clonedNetwork.layers:
 				for node in layer:
 					node.output_funct = None
 			#Remove any outputs*
 		#Reset the output vector
 		if (outputs):
-			for i in range(len(clonedNetwork.nodes[-1])):
-				clonedNetwork.nodes[-1][i].output_funct = outputs[i]
+			for i in range(len(clonedNetwork.layers[-1])):
+				clonedNetwork.layers[-1][i].output_funct = outputs[i]
 		#Reset the output vector*
 
 		return clonedNetwork
 
 	def addLayer(self, size, output = None,activation_function=None):
-		if (self.nodes == None):
+		if (self.layers == None):
 			self.IV_size = size
 			if (output):
 				return -1
-			self.nodes = [[]]
+			self.layers = [[]]
 			for i in range(size):
-				self.nodes[0].append(Neuron([]))
+				self.layers[0].append(Neuron([]))
 		else:
-			self.nodes.append([])
+			self.layers.append([])
 			for i in range(size):
 				#create neuron
 				me = None
@@ -76,8 +76,8 @@ class DenseNetwork():
 				else:
 					me = Neuron([],output,activation_function)
 				#create neuron*
-				self.nodes[-1].append(me)
-				for node in self.nodes[-2]:
+				self.layers[-1].append(me)
+				for node in self.layers[-2]:
 					node.connections.append([me,random.uniform(-1,1)])
 
 	def fire(self,IV):
@@ -85,28 +85,28 @@ class DenseNetwork():
 			raise ValueError("Input vector size is wrong")
 		else:
 			for i in range(self.IV_size):
-				self.nodes[0][i].current_inp += IV[i]
-				self.nodes[0][i].fire()
-			for i in range(1,len(self.nodes)):
-				for j in range(len(self.nodes[i])):
-					self.nodes[i][j].fire()
+				self.layers[0][i].current_inp += IV[i]
+				self.layers[0][i].fire()
+			for i in range(1,len(self.layers)):
+				for j in range(len(self.layers[i])):
+					self.layers[i][j].fire()
 
 	def mutate(self, chance=0.8, completeChangeChance=.1):
-		for i in range(1,len(self.nodes)):
+		for i in range(1,len(self.layers)):
 			if (random.random() < chance): #pick layer to mutate 80 % of the time
-				for j in range(len(self.nodes[i])):
+				for j in range(len(self.layers[i])):
 					if (random.random() < chance): #pick node to mutate 80 % of the time
-						self.nodes[i][j].mutate(chance,completeChangeChance)
+						self.layers[i][j].mutate(chance,completeChangeChance)
 '''a = DenseNetwork()
 def pwint():
 	print("Fired")
-print a.nodes
+print a.layers
 a.addLayer(4)
-print a.nodes
+print a.layers
 print "-------"
 a.addLayer(5)
-print a.nodes
+print a.layers
 print "-------"
 a.addLayer(1,pwint)
-print a.nodes'''
+print a.layers'''
 

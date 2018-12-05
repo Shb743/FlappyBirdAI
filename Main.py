@@ -50,19 +50,19 @@ def create_networks():
 	global batch_size
 	for i in range(batch_size):
 		AIs.append((Player.Player(),model.clone()))
-		AIs[-1][1].nodes[-1][0].output_funct = AIs[-1][0].jump
+		AIs[-1][1].layers[-1][0].output_funct = AIs[-1][0].jump
 		time.sleep(0.001)
 #Check if im loading an AI or training a set from scratch?
 fname = input("load from file ?") 
 if (len(fname) > 3):
 	if (input("Load Array Or Load Player (0/1):") == '1'):
 		AIs.append( (Player.Player(),load_object(fname)) )
-		AIs[0][1].nodes[-1][0].output_funct = AIs[0][0].jump
+		AIs[0][1].layers[-1][0].output_funct = AIs[0][0].jump
 	else:
 		tmpAIs = load_object(fname)
 		for tmpAI in tmpAIs:
 			AIs.append( (Player.Player(),tmpAI) )
-			AIs[-1][1].nodes[-1][0].output_funct = AIs[-1][0].jump
+			AIs[-1][1].layers[-1][0].output_funct = AIs[-1][0].jump
 else:
 	create_networks()
 #Check if im loading an AI or training a set from scratch?*
