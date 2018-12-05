@@ -9,7 +9,8 @@ class Neuron():
 	connections = None #list of lists [ [neuron,weight], ...]
 	output_funct = None#for output nodes
 	current_inp = 0.0#Sum Inputs from previous layer
-	def __init__(self,connections,output_funct=None):
+	activation_function = None#currently the only one is on the output layer and is a step function
+	def __init__(self,connections,output_funct=None,activation_function=None):
 		self.connections = connections
 		self.output_funct = output_funct
 
@@ -26,12 +27,9 @@ class Neuron():
 		for con in self.connections:
 			if (random.random() < chance): #pick connection to mutate 80 % of the time
 				if (random.random() < completeChangeChance): #completely new weight 10 % of the time
-					con[1] = random.random()
+					con[1] = random.uniform(-1,1) 
 				else:										#Slightly adjust weight
-					if (random.random() > 0.5):
-						con[1] += random.random()/50
-					else:
-						con[1] -= random.random()/50
+					con[1] += random.uniform(-0.02,0.02) 
 
 class DenseNetwork():
 	nodes = None 
@@ -60,7 +58,7 @@ class DenseNetwork():
 
 		return clonedNetwork
 
-	def addLayer(self, size, output = False):
+	def addLayer(self, size, output = None,activation_function=None):
 		if (self.nodes == None):
 			self.IV_size = size
 			if (output):
@@ -71,18 +69,20 @@ class DenseNetwork():
 		else:
 			self.nodes.append([])
 			for i in range(size):
+				#create neuron
 				me = None
-				if (output != False):
-					me = Neuron([],output[i])
+				if (isinstance(output, list)):
+					me = Neuron([],output[i],activation_function)
 				else:
-					me = Neuron([])
+					me = Neuron([],output,activation_function)
+				#create neuron*
 				self.nodes[-1].append(me)
 				for node in self.nodes[-2]:
-					node.connections.append([me,random.random()])
+					node.connections.append([me,random.uniform(-1,1)])
 
 	def fire(self,IV):
 		if (len(IV) != self.IV_size):
-			return -1
+			raise ValueError("Input vector size is wrong")
 		else:
 			for i in range(self.IV_size):
 				self.nodes[0][i].current_inp += IV[i]

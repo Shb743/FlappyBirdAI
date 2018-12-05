@@ -34,7 +34,7 @@ Game.screen_height = height*1.0
 Player.screen = screen
 Player.height = height
 Player.jump_speed = 50
-Player.decel = 15
+Player.decel = 100
 Player.gravity = 15
 
 #Ai Stuffs
@@ -42,8 +42,8 @@ batch_size = 100
 AIs = []
 model = Network.DenseNetwork()
 model.addLayer(5)#Input (MyY,next_pipe_Up,next_pipe_height,next_pipe_dist,bias)
-model.addLayer(10)#Deep
-model.addLayer(4)#Deep
+#model.addLayer(10)#Deep
+model.addLayer(3)#Deep
 model.addLayer(1)#output
 def create_networks():
 	global AIs
@@ -55,7 +55,7 @@ def create_networks():
 #Check if im loading an AI or training a set from scratch?
 fname = input("load from file ?") 
 if (len(fname) > 3):
-	if (input("Load Array Or Load Player (0/1):")):
+	if (input("Load Array Or Load Player (0/1):") == '1'):
 		AIs.append( (Player.Player(),load_object(fname)) )
 		AIs[0][1].nodes[-1][0].output_funct = AIs[0][0].jump
 	else:
@@ -115,7 +115,7 @@ def train(epochs=10, timeout=10.0, retention=10.0, children=5):
 		print("W: interrupt received, stopping training")
 
 if (len(fname) < 3):
-	train(timeout=30 , epochs=5 )
+	train(timeout=30 , epochs=50 )
 else:
 	if (input("train loaded models (y/n)") == "y"):
 		train(timeout=30 , epochs=5 )
