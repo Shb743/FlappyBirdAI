@@ -30,12 +30,14 @@ class Player():
 		#print tmp
 		if (self.active):
 			self.score += 0.1 #add to score for every second alive
-			if self.player_rect.bottom > height:
-				if (self.speed[1] < 0.0):
-					self.move(time_delta)
-			elif self.player_rect.top < 0:
-				if (self.speed[1] > 0.0):
-					self.move(time_delta)
+			if self.player_rect.bottom >= height:
+				self.active = False
+				# if (self.speed[1] < 0.0):
+				# 	self.move(time_delta)
+			elif self.player_rect.top <= 0:
+				self.active = False
+				# if (self.speed[1] > 0.0):
+				# 	self.move(time_delta)
 			else:
 				self.move(time_delta)
 			if (self.speed[1] < gravity):

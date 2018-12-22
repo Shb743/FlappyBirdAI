@@ -42,7 +42,6 @@ batch_size = 100
 AIs = []
 model = Network.DenseNetwork()
 model.addLayer(5)#Input (MyY,next_pipe_Up,next_pipe_height,next_pipe_dist,bias)
-#model.addLayer(10)#Deep
 model.addLayer(3)#Deep
 model.addLayer(1)#output
 def create_networks():
